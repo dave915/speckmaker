@@ -15,6 +15,13 @@
       "when": 1789398818025,
       "tag": "0001_legal_northstar",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1789399868719,
+      "tag": "0002_cooing_betty_ross",
+      "breakpoints": true
     }
   ]
 }

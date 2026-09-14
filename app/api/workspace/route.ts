@@ -8,7 +8,7 @@ export async function GET(request:Request) {
     const database=db();
     const [projects,mockups,comments,people]=await database.batch<Record<string,unknown>>([
       database.prepare('SELECT p.*, (SELECT COUNT(*) FROM mockups m WHERE m.project_id=p.id) AS count FROM projects p ORDER BY p.created_at ASC'),
-      database.prepare('SELECT id, project_id, name, screens, created_at FROM mockups WHERE project_id=? ORDER BY created_at ASC').bind(project),
+      database.prepare('SELECT id, project_id, name, revision, screens, created_at FROM mockups WHERE project_id=? ORDER BY created_at ASC').bind(project),
       database.prepare('SELECT * FROM comments WHERE project_id=? ORDER BY created_at ASC').bind(project),
       database.prepare('SELECT id,name,color,x,y FROM presence WHERE project_id=? AND updated_at>?').bind(project,Date.now()-15000),
     ]);
