@@ -1,0 +1,13 @@
+import type {HtmlEdit} from './html-workspace';
+import type {Screen} from './types';
+export type PreviewAction={type:'click'|'fill';selector:string;value?:string};
+export type PreviewAssertion={selector:string;property?:string;equals?:string;text_includes?:string};
+export type PreviewRequest={screen_index?:number;actions?:PreviewAction[];assertions?:PreviewAssertion[]};
+export type ScreenCheck={completed?:boolean;index:number;name:string;ok:boolean;errors:string[];warnings:string[];text:string;controls:{tag:string;id:string;text:string}[];assertions:{selector:string;passed:boolean;actual:string}[];height:number;horizontalOverflow:boolean};
+export type PreviewReport={ok:boolean;errors:string[];warnings:string[];screens:ScreenCheck[]};
+export type PreviewValidator=(html:string,request:PreviewRequest,signal:AbortSignal)=>Promise<PreviewReport>;
+export type AgentStep={id:number;tool:string;label:string;status:'running'|'done'|'error';detail?:string};
+export type AgentResult={html:string;screens:Screen[];summary:string;edits:HtmlEdit[];validation:PreviewReport;steps:number};
+export type OllamaToolCall={id?:string;function:{index?:number;name:string;arguments:Record<string,unknown>|string}};
+export type OllamaMessage={role:'system'|'user'|'assistant'|'tool';content:string;thinking?:string;tool_calls?:OllamaToolCall[];tool_name?:string;tool_call_id?:string};
+export type OllamaTool={type:'function';function:{name:string;description:string;parameters:Record<string,unknown>}};

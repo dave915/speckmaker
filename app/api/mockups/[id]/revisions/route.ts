@@ -22,7 +22,7 @@ export async function GET(request:Request,{params}:{params:Promise<{id:string}>}
 export async function POST(request:Request,{params}:{params:Promise<{id:string}>}) {
  if(!validOrigin(request))return Response.json({error:'허용되지 않은 요청이에요.'},{status:403});
  try {
-  if(Number(request.headers.get('content-length')||0)>6*1024*1024)return Response.json({error:'HTML 파일은 5MB 이하로 저장해 주세요.'},{status:413});
+  if(Number(request.headers.get('content-length')||0)>12*1024*1024)return Response.json({error:'HTML 파일은 5MB 이하로 저장해 주세요.'},{status:413});
   const parsed=actionSchema.safeParse(await request.json());if(!parsed.success)throw new RevisionError('저장할 내용과 버전 정보를 확인해 주세요.');
   const input=parsed.data;const {id}=await params;const record=await getMockup(id);
   if(input.action==='version'){
