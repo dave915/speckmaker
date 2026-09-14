@@ -19,7 +19,7 @@ export async function POST(request:Request) {
   if(!validOrigin(request))return Response.json({error:'허용되지 않은 요청이에요.'},{status:403});
   try {
     if(Number(request.headers.get('content-length')||0)>24000)return bad('내용이 너무 길어요.');
-    const p=await request.json() as {action:string; name:string; projectId:string; sessionId:string; color:string; x:number; y:number; body:string; parentId:string; mockupId:string; screenIndex:number; author:string; id:string; resolved:boolean}; const database=db(); const now=Date.now();
+    const p=await request.json() as {action:string; name:string; projectId:string; sessionId:string; color:string; x:number; y:number; body:string; parentId:string; mockupId:string; screenIndex:number; author:string; id:string; resolved:boolean;frameHeight:number}; const database=db(); const now=Date.now();
     if(p.action==='init'){
       await database.batch<Record<string,unknown>>([
         database.prepare('INSERT OR IGNORE INTO projects(id,name,color,created_at) VALUES(?,?,?,?)').bind('demo-luma','Luma 워크스페이스','#81936e',now),
@@ -48,7 +48,7 @@ export async function POST(request:Request) {
       if(parentId){const parent=await database.prepare('SELECT * FROM comments WHERE id=? AND project_id=? AND parent_id IS NULL').bind(parentId,projectId).first();if(!parent)return bad('원본 코멘트를 찾을 수 없어요.');mockupId=parent.mockup_id as string;screenIndex=parent.screen_index as number;x=null;y=null;}
       else if(mockupId){const mockup=await database.prepare('SELECT screens FROM mockups WHERE id=? AND project_id=?').bind(mockupId,projectId).first();if(!mockup)return bad('목업을 찾을 수 없어요.');const screens=JSON.parse(mockup.screens as string);if(screenIndex===null||screenIndex<0||screenIndex>=screens.length||x===null||y===null)return bad('핀 위치를 다시 선택해 주세요.');}
       else {screenIndex=null;x=null;y=null;}
-      const id=crypto.randomUUID();await database.prepare('INSERT INTO comments(id,project_id,mockup_id,screen_index,x,y,author,body,parent_id,created_at) VALUES(?,?,?,?,?,?,?,?,?,?)').bind(id,projectId,mockupId,screenIndex,x,y,str(p.author,24)||'방문자',body,parentId,now).run();return Response.json({id});
+      const id=crypto.randomUUID();await database.prepare('INSERT INTO comments(id,project_id,mockup_id,screen_index,x,y,author,body,parent_id,created_at,anchor_height) VALUES(?,?,?,?,?,?,?,?,?,?,?)').bind(id,projectId,mockupId,screenIndex,x,y,str(p.author,24)||'방문자',body,parentId,now,Number.isFinite(p.frameHeight)?Math.max(880,Math.min(20000,Math.round(p.frameHeight))):880).run();return Response.json({id});
     }
     if(p.action==='resolve'){
       await database.prepare('UPDATE comments SET resolved=? WHERE id=? AND project_id=? AND parent_id IS NULL').bind(p.resolved?1:0,str(p.id),projectId).run();return Response.json({ok:true});

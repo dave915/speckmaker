@@ -18,3 +18,5 @@
 @media(min-width:1251px){.breadcrumb,.share-button,.upload-button{font-size:13px}.file-item{font-size:13px}.project-item{font-size:14px}.comments-scroll{padding-top:1px}.comment-card{padding-bottom:22px}.canvas-heading h1{font-size:19px}.canvas-file-tag{font-size:9px}}
 @media(max-width:1250px){.review-tip{display:none}.workspace-label strong{font-size:11px}.canvas-footer-info{font-size:9px}.screen-item{font-size:13px}.project-item{font-size:12px}.comment-content p{font-size:13px}.view-tab-detail{display:none}.profile small{font-size:10px}}
 @media(max-width:630px){.comment-content p,.chat-message p{font-size:14px}.canvas-footer-info{font-size:9px}.canvas-heading p{font-size:11px}.subbar-right>span{font-size:10px}}
+/* A held Space key gives the canvas the pointer without disabling normal mockup clicks. */
+.canvas.grabbing iframe{pointer-events:none!important}

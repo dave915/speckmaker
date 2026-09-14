@@ -8,6 +8,13 @@
       "when": 1789397800964,
       "tag": "0000_stormy_madame_web",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1789398818025,
+      "tag": "0001_legal_northstar",
+      "breakpoints": true
     }
   ]
 }

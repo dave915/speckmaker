@@ -1,0 +1,1 @@
+ALTER TABLE `comments` ADD `anchor_height` integer DEFAULT 880 NOT NULL;

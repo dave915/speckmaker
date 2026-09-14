@@ -9,7 +9,7 @@ export const mockups = sqliteTable('mockups', {
 export const comments = sqliteTable('comments', {
   id: text('id').primaryKey(), projectId: text('project_id').notNull().references(() => projects.id),
   mockupId: text('mockup_id').references(() => mockups.id), screenIndex: integer('screen_index'),
-  x: real('x'), y: real('y'), author: text('author').notNull(), body: text('body').notNull(),
+  x: real('x'), y: real('y'), anchorHeight: integer('anchor_height').notNull().default(880), author: text('author').notNull(), body: text('body').notNull(),
   parentId: text('parent_id'), resolved: integer('resolved').notNull().default(0), createdAt: integer('created_at').notNull(),
 }, t => [index('idx_comments_project_created').on(t.projectId, t.createdAt)]);
 export const presence = sqliteTable('presence', {
